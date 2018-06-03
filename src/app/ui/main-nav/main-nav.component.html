@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <span class="navbar-brand mb-0 h1">SpacesNStories</span>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/home">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/artist">Artist</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="!(auth.user | async);else alreadyLoggedIn"class="nav-link" routerLink="/login">Sign in</a>
+        <ng-template #alreadyLoggedIn>
+          <a class="nav-link" (click)="auth.signOut()">Sign out</a>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</nav>
