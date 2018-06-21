@@ -1,4 +1,4 @@
-<div *ngIf="!(auth.user | async); else alreadyLoggedIn">
+<div *ngIf="!(auth.user|async); else alreadyLoggedIn">
 <form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
   <div class="form-container">
     <h3>New User Signup</h3>

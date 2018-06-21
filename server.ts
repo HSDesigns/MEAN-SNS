@@ -62,14 +62,19 @@ app.engine('html', (_, options, callback) => {
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
-
-// Server static files from /browser
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));
 // API location
 app.use('/users', users);
+// Server static files from /browser
+app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
     res.render(join(DIST_FOLDER, 'browser', 'index.html'), { req });
+});
+
+
+app.use( (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!')
 });
 
 // Start up the Node server

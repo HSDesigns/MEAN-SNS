@@ -16,6 +16,9 @@
         <a class="nav-link" routerLink="/artist">Artist</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/gallery">Gallery</a>
+      </li>
+      <li class="nav-item">
         <a *ngIf="!(auth.user | async);else alreadyLoggedIn"class="nav-link" routerLink="/login">Sign in</a>
         <ng-template #alreadyLoggedIn>
           <a class="nav-link" (click)="auth.signOut()">Sign out</a>

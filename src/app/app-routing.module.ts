@@ -3,15 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/auth.guard';
 // import { AnimalListComponent } from './animal-list/animal-list.component'
 // import { AnimalDetailComponent } from './animal-detail/animal-detail.component'
-import { ArtistComponent } from './artist/artist.component'; 
+import { ArtistComponent } from './ui/artist/artist.component'; 
 import { HomePageComponent } from './ui/home-page/home-page.component';
 import { UserFormComponent } from './ui/user-form/user-form.component';
-
+import { GalleryComponent } from './ui/gallery/gallery.component';
+// , canActivate: [AuthGuard] 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
-  { path: 'artist', component: ArtistComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: UserFormComponent }
+  { path: 'artist', component: ArtistComponent},
+  { path: 'login', component: UserFormComponent },
+  { path: 'gallery', component: GalleryComponent }
 ];
 
 @NgModule({

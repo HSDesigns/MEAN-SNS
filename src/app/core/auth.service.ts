@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap'
 import { NotifyService } from './notify.service';
@@ -12,6 +11,11 @@ import { NotifyService } from './notify.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
+interface Files {
+  filename: string;
+  contentType: string;
+  metadata: Array<any>[]
+}
 interface User {
   uid: string;
   email: string;
@@ -25,29 +29,36 @@ interface User {
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'my-auth-token'
+    'Authorization': 'my-auth-token',
+    'Access-Control-Allow-Origin': '*',
   })
 };
 @Injectable()
 export class AuthService {
-  heroesUrl = 'http://localhost:4000/users/register';  // URL to web api
+  
+  private userRegisterURL = `${ environment.API_BASE_URI }/users/register`;  // URL to web api
   private handleHTTPError: HandleError;
   user: Observable<User>;
 
+  // If needed inculde in constructor to access firestore 'private afs: AngularFirestore'
+  
   constructor(private afAuth: AngularFireAuth,
-    private afs: AngularFirestore, private http: HttpClient,
+     private http: HttpClient,
     private router: Router, private notify: NotifyService, httpErrorHandler: HttpErrorHandler) {
     this.handleHTTPError = httpErrorHandler.createHandleError('AuthService');
+
     //// Get auth data, then get firestore user document || null
     this.user = this.afAuth.authState
       .switchMap(user => {
+        console.log('from auth state');
         if (user) {
+          console.log('user generated');
           // logged in, get custom user from Firestore
           // return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
           return this.afAuth.authState;
         } else {
           // logged out, null
-          return Observable.of(null)
+          return Observable.of(null);
         }
       })
   }
@@ -93,16 +104,19 @@ export class AuthService {
   // updateUser(user: User, data: any) {
   //   return this.afs.doc(`users/${user.uid}`).update(data)
   // }
+  
+  // TODO : Solve the observable auth.user binding to template which flickers the login
   emailLogin(email: string, password: string) {
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
         console.log(credential.user);
-        return this.updateUserData(credential).subscribe((result => {
-          if (!result.success) {
-            this.user = null;
-          }else {
+        return this.registerNewUser(credential).subscribe((result => {
+          console.log(result);
+          if (result.success === true) {            
             this.router.navigate(['/artist']);
+          }else {
+            this.user = Observable.of(null);
           }
         }));
       })
@@ -123,7 +137,7 @@ export class AuthService {
     console.error(error);
     this.notify.update(error.message, 'error');
   }
-  private updateUserData(user): Observable<any>  {
+  private registerNewUser(user) {
     // Sets user data to firestore on login
     // const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
    
@@ -134,11 +148,16 @@ export class AuthService {
       photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ'
     }
     console.log(data);
-    return this.http.post<User>(this.heroesUrl, data, httpOptions).pipe(
-      catchError(this.handleHTTPError('updateUserData'))
+    return this.http.post<User>(this.userRegisterURL, data, httpOptions).pipe(
+      catchError(this.handleHTTPError('registerNewUser'))
     );
   }
-
+  getimages() {
+    const getImagesURL = `${environment.API_BASE_URI}/art/files`;
+    return this.http.get<Files>(getImagesURL, httpOptions).pipe(
+      catchError(this.handleHTTPError('getImages'))
+    );
+  }
   signOut() {
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(['/']);
