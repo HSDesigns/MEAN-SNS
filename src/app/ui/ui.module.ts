@@ -12,6 +12,8 @@ import { ArtistComponent } from './artist/artist.component';
 import { SeoService } from '../core/seo.service';
 import { UploadsModule } from '../uploads/uploads.module';
 import { GalleryComponent } from './gallery/gallery.component';
+import { NavComponent } from './nav/nav.component';
+import { MainFooterComponent } from './main-footer/main-footer.component';
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UploadsModule ],
   declarations: [ 
@@ -21,14 +23,14 @@ import { GalleryComponent } from './gallery/gallery.component';
     UserProfileComponent,
     UserFormComponent,
     ArtistComponent,
-    GalleryComponent
+    GalleryComponent,
+    NavComponent,
+    MainFooterComponent
   ],
   exports: [
     MainNavComponent,
-    NotificationMessageComponent,
-    UserProfileComponent,
-    UserFormComponent,
-    ArtistComponent
+    MainFooterComponent,
+    NotificationMessageComponent
   ],
   providers: [SeoService]
 })

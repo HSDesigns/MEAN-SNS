@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-
-import { Observable } from 'rxjs/Observable';
 import { catchError, map } from 'rxjs/operators';
 
 import { NotifyService } from './notify.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 const httpOptions = {
@@ -23,7 +21,7 @@ export class ArtworkService {
   }
   uploadArtwork(formData) {
     console.log(formData);
-    return this.http.post(this.uploadURL, formData, httpOptions).pipe(
+    return this.http.post<any>(this.uploadURL, formData, httpOptions).pipe(
       map(result => {
         if (!result) {
           this.notify.update('There Was An Error Uploading Your Artwork', 'error');

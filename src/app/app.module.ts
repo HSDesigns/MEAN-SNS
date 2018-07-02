@@ -23,7 +23,7 @@ import { UiModule } from './ui/ui.module';
     AppComponent,
     // PasswordlessAuthComponent,
   ],
-  imports: [
+  imports: [ 
     BrowserModule.withServerTransition({appId: 'my-app'}),
     BrowserTransferStateModule,
     AppRoutingModule,

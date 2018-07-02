@@ -14,7 +14,7 @@ export interface Files {
 
 export class GalleryComponent implements OnInit {
   private files: Array<Files>[];
-  private readonly getImagesURL = `${environment.API_BASE_URI}/art/image/`
+  getImagesURL = `${environment.API_BASE_URI}/art/image/`
   constructor(public auth: AuthService) { }
   
   ngOnInit() {

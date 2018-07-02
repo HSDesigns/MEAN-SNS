@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
-// const passport = require('passport');
-// const jwt = require('jsonwebtoken');
-const config = require('../config/database');
 
+const config = require('../config/database');
+const middleware = require('./errorHandler');
 // const User = require('../models/user');
 const connection = (closure) => {
   return MongoClient.connect(config.database, (err, client) => {
@@ -23,6 +22,7 @@ const sendError = (err, res) => {
 // Response handling
 let response = {
   status: 200,
+  success:true,
   data: [],
   message: null
 };
@@ -34,39 +34,35 @@ router.post('/register', (req, res, next) => {
     username: req.body.email
   };
   console.log('req.body');
-  console.log(req.body);
-  try {
-    console.log('try');
     connection((db) => {
-      db.collection('users').insert(newUser, function (err, records) {
-        console.log('err');
-        if (err) {
-          console.log(err);
-          res.json({ success: false, msg: 'Failed to register user' });
-        } else {
-          console.log(records);
-          res.json({
-            success: true,
-            msg: 'User registered'
-          });
-        }
-      });
+      try{
+        db.collection('users').insert(newUser, function (err, records) {          
+          if (err) {          
+            next(err);
+          } else {
+            console.log(records);
+            response.message = `User registered with ID ${records.insertedIds[0]} in system`;
+            response.data.push(records.insertedIds);
+            res.json(response);
+          }
+        });
+      }catch(err){
+        next(err);
+      }
+      
     });
-
-  } catch (error) {
-    console.log('error');
-    res.status(500).json({ error: error.toString() });
-  }
-  
-  // User.addUser(newUser, (err, user) => {
-  //   if(err) {
-  //     res.json({success: false, msg: 'Failed to register user'});
-  //   } else {
-  //     res.json({success: true, msg: 'User registered'});
-  //   }
-  // });
 });
-
+router.delete('/remove/:email', (req, res, next) => {
+  connection((db) => {
+    db.collection('users').deleteMany({ email: req.params.email }, (err, result) => {
+      if (err) {
+        return res.status(404).json({ err: err });
+      } else {
+        console.log(result);
+      }
+    });
+  });
+});
 // Authenticate
 // router.post('/authenticate', (req, res, next) => {
 //   const username = req.body.username;
@@ -145,4 +141,8 @@ router.get('/topCustomers', (req, res) => {
       });
   });
 });
+
+router.use(middleware.logErrors);
+router.use(middleware.errorHandle);
+
 module.exports = router;
