@@ -9,8 +9,7 @@ branches:
   - master
 
 before_script:
-  -npm install -g @angular/cli
-
+  -npm i npm@latest -g
 cache:
   directories:
     - node_modules
