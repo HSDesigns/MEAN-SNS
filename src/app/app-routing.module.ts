@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/auth.guard';
-// import { AnimalListComponent } from './animal-list/animal-list.component'
-// import { AnimalDetailComponent } from './animal-detail/animal-detail.component'
 import { ArtistComponent } from './ui/artist/artist.component'; 
 import { HomePageComponent } from './ui/home-page/home-page.component';
 import { UserFormComponent } from './ui/user-form/user-form.component';
