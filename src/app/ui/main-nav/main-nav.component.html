@@ -1,12 +1,13 @@
 <app-nav></app-nav>
 <nav class="navbar navbar-expand-lg pl-4">
-  <span class="navbar-brand mb-0 h1">SpacesNStories</span>
+  <a class="navbar-brand mb-0 h1">
+    <img class="logo" src="./assets/logo@2x.png" alt="Spaces and stories logo">
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse d-md-flex justify-content-md-center" id="navbarSupportedContent">
     <ul class="navbar-nav mx-auto">
       <li class="nav-item">
         <a class="nav-link text-black" routerLink="/home">Gallery
@@ -19,21 +20,18 @@
       <li class="nav-item">
         <a class="nav-link text-black" routerLink="/gallery">Get In Touch</a>
       </li>
-       </ul>
-      <ul class="navbar-nav ml-md-0">
-    <li class="nav-item">
-      <a class="nav-item nav-link btn btn-bd-download d-lg-inline-block mb-3 mb-md-0 ml-md-3 text-black" href="https://github.com/twbs/bootstrap/archive/v4.0.0.zip">Login / SignUp</a>
-    </li>
-  </ul>
-  
-      <!-- <li class="nav-item">
-        <a *ngIf="!(auth.user | async);else alreadyLoggedIn"class="nav-link" routerLink="/login">Sign in</a>
+    </ul>
+    <ul class="navbar-nav ml-md-0">
+      <li class="nav-item">
+        <a *ngIf="!(auth.user | async);else alreadyLoggedIn" class="nav-item nav-link btn btn-bd-download d-lg-inline-block mb-3 mb-md-0 ml-md-3 text-black"
+          routerLink="/login">Login / SignUp</a>
         <ng-template #alreadyLoggedIn>
-          <a class="nav-link" (click)="auth.signOut()">Sign out</a>
+          <a class="nav-item nav-link btn btn-bd-download d-lg-inline-block mb-3 mb-md-0 ml-md-3 text-black" (click)="auth.signOut()">Sign out</a>
         </ng-template>
-      </li> -->
-   
+      </li>
+    </ul>
+
   </div>
- 
+
 </nav>
- <div class=" pl-4"></div>
+<div class=" pl-4"></div>
