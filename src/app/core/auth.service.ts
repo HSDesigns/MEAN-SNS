@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/switchMap'
 import { NotifyService } from './notify.service';
 
@@ -36,7 +37,8 @@ const httpOptions = {
 };
 @Injectable()
 export class AuthService {
-  
+  private messageSource = new BehaviorSubject<boolean>(false);
+  isLoading = this.messageSource.asObservable();
   // private userRegisterURL = `${ environment.API_BASE_URI }/users/register`;  // URL to web api
   private userRegisterURL = `https://sns-api-207407.appspot.com/api/user/register`;  // URL to web api
   private handleHTTPError: HandleError;
@@ -45,7 +47,7 @@ export class AuthService {
   // If needed inculde in constructor to access firestore 'private afs: AngularFirestore'
   
   constructor(private afAuth: AngularFireAuth,
-     private http: HttpClient,
+    private http: HttpClient,
     private router: Router, private notify: NotifyService, httpErrorHandler: HttpErrorHandler) {
     this.handleHTTPError = httpErrorHandler.createHandleError('AuthService');
 
@@ -63,6 +65,9 @@ export class AuthService {
           return Observable.of(null);
         }
       })
+  }
+  changeMessage(isLoading: boolean) {
+    this.messageSource.next(isLoading)
   }
   // emailSignUp(email: string, password: string) {
   //   return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
@@ -98,10 +103,14 @@ export class AuthService {
       .createUserWithEmailAndPassword(email, password)
       .then(credential => {
          this.router.navigate(['/home']);
+         this.changeMessage(false);
          this.notify.update('Welcome To Spaces & Stories', 'success');
           // return this.updateUserData(credential); // if using firestore
       })
-      .catch(error => this.handleError(error));
+      .catch(error => {
+        this.handleError(error);
+        this.changeMessage(false);
+      });
   }
   // Update properties on the user document
   // updateUser(user: User, data: any) {
@@ -114,16 +123,21 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
         console.log(credential.user);
-        return this.registerNewUser(credential).subscribe((result => {
+        return this.registerNewUser(credential.user).subscribe((result => {
           console.log(result);
           if (result.success === true) {            
             this.router.navigate(['/upload']);
+            this.changeMessage(false);
           }else {
             this.user = Observable.of(null);
+            this.changeMessage(false);
           }
         }));
       })
-      .catch(error => this.handleError(error));
+      .catch(error => {
+        this.handleError(error);
+        this.changeMessage(false);
+      });
   }
 
   // Sends email allowing user to reset password
@@ -141,9 +155,6 @@ export class AuthService {
     this.notify.update(error.message, 'error');
   }
   private registerNewUser(user) {
-    // Sets user data to firestore on login
-    // const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-   
     const data: User = {
       uid: user.uid,
       email: user.email,

@@ -11,7 +11,7 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent implements OnInit {
-  loading = false; 
+  public loading: boolean; 
   user;
   userForm: FormGroup;
   newUser = true; // to toggle login or signup form
@@ -37,6 +37,7 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.auth.isLoading.subscribe(message => this.loading = message)
   }
 
   toggleForm() {
@@ -44,14 +45,16 @@ export class UserFormComponent implements OnInit {
   }
 
   signup() {
+    this.auth.changeMessage(true);
     this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']);
   }
 
   login() {
+    this.auth.changeMessage(true);
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']);
   }
   logout() {
-    this.loading = false;
+    this.auth.changeMessage(true);
     return this.auth.signOut;
   }
   resetPassword() {

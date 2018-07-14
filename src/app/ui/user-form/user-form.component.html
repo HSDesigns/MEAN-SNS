@@ -1,3 +1,4 @@
+<ngx-loading [show]="loading"></ngx-loading>
 <div *ngIf="!(auth.user|async);">
 <form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
   <div class="form-container">
