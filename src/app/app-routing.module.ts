@@ -8,7 +8,7 @@ import { GalleryComponent } from './ui/gallery/gallery.component';
 import { UploadArtworkComponent } from './ui/upload-artwork/upload-artwork.component';
 // , canActivate: [AuthGuard] 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'gallery', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
   { path: 'artist', component: ArtistComponent},
   { path: 'login', component: UserFormComponent },
