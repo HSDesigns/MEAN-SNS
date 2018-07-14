@@ -12,6 +12,7 @@ import { ArtistComponent } from './artist/artist.component';
 import { SeoService } from '../core/seo.service';
 import { UploadsModule } from '../uploads/uploads.module';
 import { GalleryComponent } from './gallery/gallery.component';
+import { UploadArtworkComponent } from './upload-artwork/upload-artwork.component';
 import { NavComponent } from './nav/nav.component';
 import { MainFooterComponent } from './main-footer/main-footer.component';
 @NgModule({
@@ -25,7 +26,8 @@ import { MainFooterComponent } from './main-footer/main-footer.component';
     ArtistComponent,
     GalleryComponent,
     NavComponent,
-    MainFooterComponent
+    MainFooterComponent,
+    UploadArtworkComponent
   ],
   exports: [
     MainNavComponent,

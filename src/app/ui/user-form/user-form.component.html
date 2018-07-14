@@ -1,4 +1,4 @@
-<div *ngIf="!(auth.user|async); else alreadyLoggedIn">
+<div *ngIf="!(auth.user|async);">
 <form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
   <div class="form-container">
     <h3>New User Signup</h3>
@@ -52,10 +52,3 @@
   </div>
 </form>
 </div>
-<ng-template #alreadyLoggedIn>
-  <p class="text-success">
-    You are logged in
-    <i class="fa fa-thumbs-up"></i>
-  </p>
-  <button (click)="auth.signOut()" class="btn col-sm-12 btn-primary">Signout</button>
-</ng-template>

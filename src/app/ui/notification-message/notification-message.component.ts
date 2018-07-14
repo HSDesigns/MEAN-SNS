@@ -8,5 +8,5 @@ import { NotifyService } from '../../core/notify.service';
 })
 export class NotificationMessageComponent {
 
-  constructor(public notify: NotifyService) { }
+  constructor(public notify: NotifyService) { } 
 }

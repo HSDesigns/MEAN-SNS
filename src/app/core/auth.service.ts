@@ -24,6 +24,7 @@ interface User {
   favoriteColor?: string;
   msg?: string;
   success?: boolean;
+  role: string;
 }
 
 const httpOptions = {
@@ -36,7 +37,8 @@ const httpOptions = {
 @Injectable()
 export class AuthService {
   
-  private userRegisterURL = `${ environment.API_BASE_URI }/users/register`;  // URL to web api
+  // private userRegisterURL = `${ environment.API_BASE_URI }/users/register`;  // URL to web api
+  private userRegisterURL = `https://sns-api-207407.appspot.com/api/user/register`;  // URL to web api
   private handleHTTPError: HandleError;
   user: Observable<User>;
 
@@ -115,7 +117,7 @@ export class AuthService {
         return this.registerNewUser(credential).subscribe((result => {
           console.log(result);
           if (result.success === true) {            
-            this.router.navigate(['/artist']);
+            this.router.navigate(['/upload']);
           }else {
             this.user = Observable.of(null);
           }
@@ -146,7 +148,8 @@ export class AuthService {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName || 'nameless user',
-      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ'
+      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+      role: 'admin'
     }
     console.log(data);
     return this.http.post<User>(this.userRegisterURL, data, httpOptions).pipe(
