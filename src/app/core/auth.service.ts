@@ -36,7 +36,7 @@ const httpOptions = {
 @Injectable()
 export class AuthService {
   
-  private userRegisterURL = `${ environment.API_BASE_URI }/users/register`;  // URL to web api
+  private userRegisterURL = `${ environment.API_BASE_URI }/user/register`;  // URL to web api
   private handleHTTPError: HandleError;
   user: Observable<User>;
 
