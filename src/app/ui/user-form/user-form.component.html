@@ -1,55 +1,69 @@
 <ngx-loading [show]="loading"></ngx-loading>
-<div *ngIf="!(auth.user|async);">
-<form [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
-  <div class="form-container">
-    <h3>New User Signup</h3>
-    <p class="btn col-sm-2 btn-primary" (click)="toggleForm()">Already Registered?</p>
-    <hr>
-
-    <div class="form-group">
-      <input type="email" id="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email"
-        required autocomplete="new-password">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      <div *ngIf="formErrors.email" class="alert">
-        {{ formErrors.email }}
+<div class="d-md-flex flex-items-center gutter-md-spacious" *ngIf="!(auth.user|async);">
+  <form class="mx-auto login-box col-sm-8 col-md-5 hide-sm" [formGroup]="userForm" *ngIf="newUser" (ngSubmit)="signup()">
+    <div class="form-container">
+      <div class="text-center">
+        <h3 class="dark-grey-text mb-4">
+          <strong>Sign up</strong>
+        </h3>
       </div>
-      <input type="password" id="password" placeholder="Enter password" class="form-control" formControlName="password" required>
-
-      <div *ngIf="formErrors.password" class="alert">
-        {{ formErrors.password }}
+      <div class="text-center d-flex justify-content-center mb-3">
+        <button (click)="toggleForm()" type="button" class=" mb-4 btn blue-gradient btn-block btn-rounded z-depth-1a waves-effect waves-light">or Sign in?</button>
       </div>
+
+      <div class="form-group">
+        <input type="email" id="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email"
+          required autocomplete="new-password">
+        <small id="emailHelp" class="mb-4 form-text text-muted">We'll never share your email with anyone else.</small>
+        <div *ngIf="formErrors.email" class="alert">
+          {{ formErrors.email }}
+        </div>
+        <input type="password" id="password" placeholder="Enter password" class="form-control" formControlName="password" required>
+
+        <div *ngIf="formErrors.password" class="alert">
+          {{ formErrors.password }}
+        </div>
+      </div>
+      <div *ngIf="errorMessage" class="alert">
+        {{ errorMessage }}
+      </div>
+      <div class="d-flex justify-content-center ">
+        <button type="submit" class="btn-full text-center mb-4 btn blue-gradient btn-rounded z-depth-1a " [disabled]="!userForm.valid">Submit</button>
+      </div>
+
     </div>
-    <div *ngIf="errorMessage" class="alert">
-      {{ errorMessage }}
-    </div>
-    <button type="submit" class="btn col-sm-12 btn-primary" [disabled]="!userForm.valid">Submit</button>
-  </div>
-</form>
+  </form>
 
 
-<form [formGroup]="userForm" *ngIf="!newUser" (ngSubmit)="login()">
-  <div class="form-container">
-    <h3>Existing User Login</h3>
-    <p class="btn col-sm-2 btn-primary" (click)="toggleForm()">New User?</p>
-    <hr>
-    <div class="form-group">
-      <input type="email" id="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email"
-        required autocomplete="new-password">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      <div *ngIf="formErrors.email" class="alert">
-        {{ formErrors.email }}
+  <form class="mx-auto login-box col-sm-8 col-md-5 hide-sm" [formGroup]="userForm" *ngIf="!newUser" (ngSubmit)="login()">
+    <div class="form-container">
+      <div class="text-center">
+        <h3 class="dark-grey-text mb-4">
+          <strong>Sign up</strong>
+        </h3>
       </div>
-      <input type="password" id="password" placeholder="Enter password" class="form-control" formControlName="password" required
-        autocomplete="new-password">
-
-      <div *ngIf="formErrors.password" class="alert">
-        {{ formErrors.password }}
+      <div class="text-center d-flex justify-content-center mb-3">
+        <button (click)="toggleForm()" type="button" class="mb-4 btn blue-gradient btn-block btn-rounded z-depth-1a waves-effect waves-light">or Sign in?</button>
       </div>
-    </div>
+      <div class="form-group">
+        <input type="email" id="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email"
+          required autocomplete="new-password">
+        <small id="emailHelp" class="mb-4 form-text text-muted">We'll never share your email with anyone else.</small>
+        <div *ngIf="formErrors.email" class="alert">
+          {{ formErrors.email }}
+        </div>
+        <input type="password" id="password" placeholder="Enter password" class="form-control" formControlName="password" required
+          autocomplete="new-password">
 
-    <button type="submit" class="btn col-sm-12 btn-primary" [disabled]="!userForm.valid">Submit</button>
-    <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
-    <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
-  </div>
-</form>
+        <div *ngIf="formErrors.password" class="alert">
+          {{ formErrors.password }}
+        </div>
+      </div>
+      <div class="d-flex justify-content-center ">
+        <button type="submit" class="text-center mb-4 btn blue-gradient btn-full btn-rounded z-depth-1a " [disabled]="!userForm.valid">Submit</button>
+      </div>
+      <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
+      <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
+    </div>
+  </form>
 </div>

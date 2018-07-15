@@ -24,7 +24,8 @@
     <ul class="navbar-nav ml-md-0">
       <li class="nav-item">
         <a *ngIf="!(auth.user | async);else alreadyLoggedIn" class="nav-item nav-link btn btn-bd-download d-lg-inline-block mb-3 mb-md-0 ml-md-3 text-black"
-          routerLink="/login">Login / SignUp</a>
+          routerLink="/login">Sign in
+          <span class="text-gray" style="font-size: 80%;font-weight: 100;">or</span> Sign up</a>
         <ng-template #alreadyLoggedIn>
           <a class="nav-item nav-link btn btn-bd-download d-lg-inline-block mb-3 mb-md-0 ml-md-3 text-black" (click)="auth.signOut()">Sign out</a>
         </ng-template>

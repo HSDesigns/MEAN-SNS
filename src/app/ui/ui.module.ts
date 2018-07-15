@@ -16,8 +16,10 @@ import { UploadArtworkComponent } from './upload-artwork/upload-artwork.componen
 import { NavComponent } from './nav/nav.component';
 import { MainFooterComponent } from './main-footer/main-footer.component';
 import { MaterialModule } from '../material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 @NgModule({
-  imports: [LoadingModule, CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UploadsModule, MaterialModule ],
+  imports: [LoadingModule,
+     CommonModule, RouterModule, FormsModule, ReactiveFormsModule, UploadsModule, MaterialModule, BrowserAnimationsModule ],
   declarations: [ 
     HomePageComponent,
     MainNavComponent,
